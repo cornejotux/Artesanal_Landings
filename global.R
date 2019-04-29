@@ -9,10 +9,12 @@ rm(list=ls())
 
 library(dplyr)
 library(tidyr)
+require(ggplot2)
+
 
 #library(data.table)
 #require(lubridate)
-#require(ggplot2)
+
 #require(ggjoy)
 #require(scales)
 #library(ggthemes)
@@ -25,12 +27,26 @@ library(tidyr)
 # library(readxl)
 # require(janitor)
 # 
-# caletas <- read_excel("data/SIAC 460107519.xlsx", skip = 1)
-# caletas <- caletas %>% 
-#   clean_names() %>% 
-#   select(-total) %>% 
-#   gather(mes, captura, 7:18) %>% 
-#   na.omit(captura)
+# caletas <- read_excel("c:/Users/jorge.cornejo/Google Drive/Projecto ERE/SIAC 460107519.xlsx", skip = 1)
+# caletas <- caletas %>%
+#   clean_names() %>%
+#   gather(mes, captura, 7:18) %>%
+#   na.omit(captura) %>%
+#   mutate(mes=replace(mes, mes=="ene", 1)) %>% 
+#   mutate(mes=replace(mes, mes=="feb", 2)) %>% 
+#   mutate(mes=replace(mes, mes=="mar", 3)) %>% 
+#   mutate(mes=replace(mes, mes=="abr", 4)) %>% 
+#   mutate(mes=replace(mes, mes=="may", 5)) %>% 
+#   mutate(mes=replace(mes, mes=="jun", 6)) %>% 
+#   mutate(mes=replace(mes, mes=="jul", 7)) %>% 
+#   mutate(mes=replace(mes, mes=="ago", 8)) %>% 
+#   mutate(mes=replace(mes, mes=="sep", 9)) %>% 
+#   mutate(mes=replace(mes, mes=="oct", 10)) %>% 
+#   mutate(mes=replace(mes, mes=="nov", 11)) %>% 
+#   mutate(mes=replace(mes, mes=="dic", 12)) %>% 
+#   mutate(ano = as.Date(paste(ano, mes, "01",sep="-"), "%Y-%m-%d")) %>% 
+#   select(-total, -mes)
+
 
 # Se lee todo el ambiente, incluendo los datos de las caletas.
 load(file="data/data.RData")

@@ -4,22 +4,18 @@ fluidPage(
     title="Explorador de Desembarcos Artesanales",
     #theme = shinytheme("flatly"),
     headerPanel(
-        HTML('<center><img src="header.png" scale width="800" height="100"/></center>')
+        HTML('<td style="width: 100%"></td>
+              
+              <td style="width: 0%"></td>')
     ),
     sidebarPanel(
         HTML('
-             <table style="width:160%">
-             <tr>
-             <td style="width: 50%"><left><img src="NCEAS.jpg" scale width="170" height="50"/></left></td>
-             <td style="width: 50%"><right><img src="SASAP.jpg" scale width="50" height="50"/></right></td>
-             </tr>
-             </table>
              '),
         conditionalPanel(
-          condition="input.tabselected==1",uiOutput("Region"), uiOutput("Species"), uiOutput("sliderYear")
+          condition="input.tabselected==1",uiOutput("Region"), uiOutput("Especies"), uiOutput("sliderYear")
          ),
          conditionalPanel(
-          condition="input.tabselected==2", uiOutput("Species2"), uiOutput("sliderYear2")
+          condition="input.tabselected==2", uiOutput("Especies2"), uiOutput("sliderYear2")
           ),
         conditionalPanel(
           condition="input.tabselected==3", uiOutput("Region3"), uiOutput("sliderYear3")

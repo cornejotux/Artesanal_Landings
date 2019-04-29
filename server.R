@@ -45,7 +45,7 @@ shinyServer(function(input, output, session) {
           selectInput("Especies", "Especies", searchResult2(), selected = Especies)
             })
         minmax <- reactive({
-          selectYears(filter(caletas, region == Region, Especies == Especies))
+          selectYears(filter(caletas, region == Region, especie == Especies))
             })
         print(slider)
         print(Region)
@@ -68,24 +68,24 @@ shinyServer(function(input, output, session) {
         if (tab == 1)
         {
             slider <- input$sliderYear
-            Species <- input$Species
+            Especies <- input$Especies
             R <<- input$Region
         }  else if (tab == 3)
         {
             slider <- input$sliderYear3
-            Species <- S
+            Especies <- S
             Region <- input$Region3
         }
         
-        output$Species2 <- renderUI({ 
-            selectInput(inputId = "Species2", label = "Species", sp, selected = Species)
+        output$Especies2 <- renderUI({ 
+            selectInput(inputId = "Especies2", label = "Especies", sort(unique(caletas$especie)), selected = Especies)
             })
         minmax <- reactive({
-            selectYears(filter(asl, Species == input$Species2))
+            selectYears(filter(caletas, especie == input$Especies2))
             })
 
         output$sliderYear2 <- renderUI({
-            req(input$Species2)
+            req(input$Especies2)
             minmax <- minmax()
             sliderInput(inputId = "sliderYear2", "Year range:",
                     min = minmax[1], max = minmax[2],
@@ -103,19 +103,19 @@ shinyServer(function(input, output, session) {
         if (tab == 1)
         {
             slider <- input$sliderYear
-            Species <- input$Species
+            Especies <- input$Especies
             Region <- input$Region
         } else if (tab == 2)
         {
             slider <- input$sliderYear2
-            S <<- input$Species2
+            S <<- input$Especies2
             Region <- R
         } 
         output$Region3 <- renderUI({
-            selectInput('Region3', 'Region', sort(unique(asl$SASAP.Region)), selected = Region)
+            selectInput('Region3', 'Region', sort(unique(caletas$region)), selected = Region)
             })
         minmax <- reactive({
-            selectYears(filter(asl, SASAP.Region == input$Region))
+            selectYears(filter(caletas, region == input$Region))
             })
         output$sliderYear3 <- renderUI({
             req(input$Region3)
@@ -131,53 +131,30 @@ shinyServer(function(input, output, session) {
    
     output$plotRegionSp <- renderPlot({
         req(input$Region)
-        req(input$Species)
+        req(input$Especies)
         req(input$sliderYear)
-        temp <- filter(asl, SASAP.Region == input$Region, Species == input$Species, sampleYear >= input$sliderYear[1], sampleYear <= input$sliderYear[2])
-        model <- lm(meanLenth ~ sampleYear, data=temp)
-        eq <- paste(round(model$coefficients[2],2), '* Year +', round(model$coefficients[1],2))
-        if (model$coefficients[1] < 0)
-        {
-            eq <- paste(round(model$coefficients[2],2), '* Year ', round(model$coefficients[1],2))
-        } 
+        temp <- filter(caletas, region == input$Region, especie == input$Especies, ano >= input$sliderYear[1], ano <= input$sliderYear[2])
+
         ggplot(temp, 
-               aes(x=sampleYear, y=meanLenth)) + 
-            geom_point() + geom_smooth(method="lm", color="red", fill = "orange") + 
-            geom_smooth(fill = "light blue") + theme_joy() + 
-            theme(axis.text.x = element_text(angle = 45, hjust = 1, size=12),
-                  axis.text.y = element_text(angle = 0, hjust = 1, size=12),
-                  text = element_text(size=15), title = element_text(size=15)) +
-            xlab("Time [Years]") + ylab("Mean Length [mm]") +
-            ggtitle(paste('Length =', eq, input$tabselected), 
-                    subtitle = capitalize(paste(input$Species, "mean size")))
+               aes(x=ano, y=captura)) + 
+             geom_point() + facet_wrap(~provincia)
+        
     },  height = 700, width = 600 )
 
     output$plotAllRegions <- renderPlot({
         req(input$sliderYear2)
-        temp <- filter(asl, Species == input$Species2, sampleYear >= input$sliderYear2[1], sampleYear <= input$sliderYear2[2])
-        ggplot(temp, 
-               aes(x=sampleYear, y=meanLenth)) + 
-            geom_point(size=0.5) + geom_smooth(method="lm", color="red", fill="orange") + geom_smooth(fill="light blue") +
-            theme_joy() + facet_wrap(~SASAP.Region, ncol = 4) +
-            theme(axis.text.x = element_text(angle = 45, hjust = 1, size=12),
-                  axis.text.y = element_text(angle = 0, hjust = 1, size=12),
-                  text = element_text(size=15), title = element_text(size=15)) +
-            xlab("Time [Years]") + ylab("Mean Length [mm]") +             
-            ggtitle('',subtitle = capitalize(paste(input$Species2)))
+        temp <- filter(caletas, especie == input$Especies2, ano >= input$sliderYear2[1], ano <= input$sliderYear2[2])
+        ggplot(temp, aes(x=ano, y=captura)) + 
+            geom_point(size=0.5) +
+            facet_wrap(~region)
     },  height = 700, width = 600 )
     
     output$plotAllSpecies <- renderPlot({
         req(input$sliderYear3)
-        temp <- filter(asl, SASAP.Region == input$Region3, sampleYear >= input$sliderYear3[1], sampleYear <= input$sliderYear3[2])
+        temp <- filter(caletas, region == input$Region3, ano >= input$sliderYear3[1], ano <= input$sliderYear3[2])
         ggplot(temp, 
-               aes(x=sampleYear, y=meanLenth)) + 
-            geom_point(size=0.5) + geom_smooth(method="lm", color="red", fill="orange") + geom_smooth(fill="light blue") +
-            theme_joy() + facet_wrap(~Species, ncol = 2) +
-            theme(axis.text.x = element_text(angle = 45, hjust = 1, size=12),
-                  axis.text.y = element_text(angle = 0, hjust = 1, size=12),
-                  text = element_text(size=15), title = element_text(size=15)) +
-            xlab("Time [Years]") + ylab("Mean Length [mm]") +             
-            ggtitle('',subtitle = capitalize(paste(input$Region3)))
+               aes(x=ano, y=captura)) + 
+            geom_point(size=0.5)
     },  height = 700, width = 600 )
     
 })
