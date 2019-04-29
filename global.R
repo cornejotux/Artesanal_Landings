@@ -6,35 +6,45 @@
 ##### This section download the data from KNB and prepare it for Shiny app
 rm(list=ls())
 
-library(data.table)
+
 library(dplyr)
-require(lubridate)
-require(ggplot2)
-require(ggjoy)
-require(scales)
-library(ggthemes)
-library(shinythemes)
-library(Hmisc)
-library(mgcv)
+library(tidyr)
 
-#### WARNING: this dataset is known to have problem!! 
-#### This is been used only to develop the shiny app.
-asl <- readRDS(file="meanASL.RDS")
+#library(data.table)
+#require(lubridate)
+#require(ggplot2)
+#require(ggjoy)
+#require(scales)
+#library(ggthemes)
+#library(shinythemes)
+#library(Hmisc)
+#library(mgcv)
 
-#asl$SASAP.Region <- ifelse(asl$SASAP.Region == "Alaska Peninsula and Aleutian Islands", "Ak. Peninsula and Aleutian Is.", asl$SASAP.Region)
-#saveRDS(asl, file="meanASL.RDS")
-#asl$yday <- yday(asl$sampleDate)
-#asl$md <- as.Date(asl$yday, format = "%j", origin = "1.1.2018")
+#### Aqui preparo los datos para que sean depues usados en el Shiny
+#### Esta seccion solo se usar ahora y luego se mantiene comentada
+# library(readxl)
+# require(janitor)
+# 
+# caletas <- read_excel("data/SIAC 460107519.xlsx", skip = 1)
+# caletas <- caletas %>% 
+#   clean_names() %>% 
+#   select(-total) %>% 
+#   gather(mes, captura, 7:18) %>% 
+#   na.omit(captura)
 
-selectYears <- function(data=asl)
+# Se lee todo el ambiente, incluendo los datos de las caletas.
+load(file="data/data.RData")
+
+
+selectYears <- function(data=caletas)
 {
-    minY <- min(data$sampleYear, na.rm = T)
-    maxY <- max(data$sampleYear, na.rm = T)
+    minY <- min(caletas$ano, na.rm = T)
+    maxY <- max(caletas$ano, na.rm = T)
     output <- c(minY, maxY)
     return(output)
 }
 
 sp <- c("chinook", "coho", "chum", "pink", "sockeye")
 tab <<- 0
-S <<- 'sockeye'
-R <<- "Ak. Peninsula and Aleutian Is."
+S <<- 'JAIBA PELUDA O PACHONA'
+R <<- "1"

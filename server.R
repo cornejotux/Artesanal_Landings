@@ -11,47 +11,47 @@ shinyServer(function(input, output, session) {
           if(tab == 0)
           {
               minmax <- reactive({
-                  selectYears(filter(asl, SASAP.Region == R, Species == S))
+                  selectYears(filter(caletas, SASAP.Region == R, Species == S))
               })
               minmax <- minmax()
               slider <- minmax
               Region <- R
-              Species <- S
+              Especies <- S
           } else if (tab == 1)
           {
               slider <- input$sliderYear
-              Species <- input$Species
+              Especies <- input$Especies
               Region <- input$Region
           } else if (tab == 2)
           {
               slider <- input$sliderYear2
-              Species <- input$Species2
+              Especies <- input$Especies2
               Region <- R
           } else if (tab == 3)
           {
               slider <- input$sliderYear3
-              Species <- S
+              Especies <- S
               Region <- input$Region3
           }
           
         output$Region <- renderUI({
-          selectInput('Region', 'Region', sort(unique(asl$SASAP.Region)), selected = Region)
+          selectInput('Region', 'Region', sort(unique(caletas$region)), selected = Region)
             })
         searchResult2 <- reactive({
-          sort(unique(filter(asl, SASAP.Region == input$Region)$Species ))
+          sort(unique(filter(caletas, region == input$Region)$especie ))
             })
-        output$Species <- renderUI({
+        output$Especies <- renderUI({
           req(input$Region)
-          selectInput("Species", "Species", searchResult2(), selected = Species)
+          selectInput("Especies", "Especies", searchResult2(), selected = Especies)
             })
         minmax <- reactive({
-          selectYears(filter(asl, SASAP.Region == Region, Species == Species))
+          selectYears(filter(caletas, region == Region, Especies == Especies))
             })
         print(slider)
         print(Region)
-        print(Species)
+        print(Especies)
         output$sliderYear <- renderUI({
-          req(Species)
+          req(Especies)
           minmax <- minmax()
           sliderInput("sliderYear", "Year range:",
                       min = minmax[1], max = minmax[2],

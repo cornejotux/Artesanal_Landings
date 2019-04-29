@@ -1,7 +1,7 @@
 
 #pageWithSidebar(
 fluidPage(
-    title="Size Change Explorer",
+    title="Explorador de Desembarcos Artesanales",
     #theme = shinytheme("flatly"),
     headerPanel(
         HTML('<center><img src="header.png" scale width="800" height="100"/></center>')
