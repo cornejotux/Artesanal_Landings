@@ -15,6 +15,7 @@ shinyServer(function(input, output, session) {
               })
               minmax <- minmax()
               slider <- minmax
+              
               Region <- R
               Especies <- S
           } else if (tab == 1)
@@ -38,17 +39,27 @@ shinyServer(function(input, output, session) {
           selectInput('Region', 'Region', sort(unique(caletas$region)), selected = Region)
             })
         searchResult2 <- reactive({
-          sort(unique(filter(caletas, region == input$Region)$especie ))
+          sort(unique(filter(caletas, region == input$Region)$provincia ))
             })
-        output$Especies <- renderUI({
+        
+        output$Provincia <- renderUI({
           req(input$Region)
-          selectInput("Especies", "Especies", searchResult2(), selected = Especies)
+          selectInput('Provincia', 'Provincia', searchResult2(), selected = Provincia)
+        })
+        searchResult3 <- reactive({
+          sort(unique(filter(caletas, region == input$Region, provincia == input$Provincia)$especie ))
+        })
+        
+        output$Especies <- renderUI({
+          req(input$Provincia)
+          selectInput("Especies", "Especies", searchResult3(), selected = Especies)
             })
         minmax <- reactive({
-          selectYears(filter(caletas, region == Region, especie == Especies))
+          selectYears(filter(caletas, region == Region, provincia == Provincia, especie == Especies))
             })
         print(slider)
         print(Region)
+        print(Provincia)
         print(Especies)
         output$sliderYear <- renderUI({
           req(Especies)
@@ -133,11 +144,12 @@ shinyServer(function(input, output, session) {
         req(input$Region)
         req(input$Especies)
         req(input$sliderYear)
-        temp <- filter(caletas, region == input$Region, especie == input$Especies, ano >= input$sliderYear[1], ano <= input$sliderYear[2])
+        temp <- filter(caletas, region == input$Region, provincia == input$Provincia, especie == input$Especies, 
+                       ano >= input$sliderYear[1], ano <= input$sliderYear[2])
 
         ggplot(temp, 
                aes(x=ano, y=captura)) + 
-             geom_point() + facet_wrap(~provincia)
+             geom_point() + facet_wrap(~caleta)
         
     },  height = 700, width = 600 )
 

@@ -60,7 +60,8 @@ selectYears <- function(data=caletas)
     return(output)
 }
 
-sp <- c("chinook", "coho", "chum", "pink", "sockeye")
+#sp <- c("chinook", "coho", "chum", "pink", "sockeye")
 tab <<- 0
-S <<- 'JAIBA PELUDA O PACHONA'
-R <<- "1"
+S <<- 'ALMEJA'
+R <<- "8"
+Provincia <<- "Arauco"
