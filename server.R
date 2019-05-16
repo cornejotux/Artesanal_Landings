@@ -1,4 +1,7 @@
 tab <- 0
+S <<- 'ALMEJA'
+R <<- "8"
+Provincia <<- "Arauco"
 
 library(shiny)
 shinyServer(function(input, output, session) {
@@ -64,10 +67,10 @@ shinyServer(function(input, output, session) {
         output$sliderYear <- renderUI({
           req(Especies)
           minmax <- minmax()
-          sliderInput("sliderYear", "Year range:",
+          sliderInput("sliderYear", "Rango de Años:",
                       min = minmax[1], max = minmax[2],
                       value = c(slider[1], slider[2]),
-                      step=1, sep = '')
+                      step=5, sep = '', timeFormat='%F')
             })
         tab <<- 1
       }
@@ -148,8 +151,10 @@ shinyServer(function(input, output, session) {
                        ano >= input$sliderYear[1], ano <= input$sliderYear[2])
 
         ggplot(temp, 
-               aes(x=ano, y=captura)) + 
-             geom_point() + facet_wrap(~caleta)
+          aes(x=ano, y=captura)) + 
+          geom_point() + geom_smooth(method = "loess") + 
+          facet_wrap(~caleta) + xlab("Año") + ylab("Desembarques (ton?)")
+          
         
     },  height = 700, width = 600 )
 
@@ -157,8 +162,10 @@ shinyServer(function(input, output, session) {
         req(input$sliderYear2)
         temp <- filter(caletas, especie == input$Especies2, ano >= input$sliderYear2[1], ano <= input$sliderYear2[2])
         ggplot(temp, aes(x=ano, y=captura)) + 
-            geom_point(size=0.5) +
-            facet_wrap(~region)
+      geom_point() + geom_smooth(method = "loess") + 
+      facet_wrap(~region) + xlab("Año") + ylab("Desembarques (ton?)")
+    
+    
     },  height = 700, width = 600 )
     
     output$plotAllSpecies <- renderPlot({

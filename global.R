@@ -10,6 +10,7 @@ rm(list=ls())
 library(dplyr)
 library(tidyr)
 require(ggplot2)
+require(lubridate)
 
 
 #library(data.table)
@@ -51,6 +52,24 @@ require(ggplot2)
 # Se lee todo el ambiente, incluendo los datos de las caletas.
 load(file="data/data.RData")
 
+# caletas <- caletas %>%
+#   group_by(region, provincia, comuna, caleta, especie, ano=year(ano)) %>%
+#   summarize(captura=sum(captura)) #%>% 
+#   #rename(ano=year(ano), captura=sum(captura))
+# 
+# regiones <- read.csv(file="c:/Users/jorge.cornejo/Downloads/regiones.csv", sep=";")
+# names(regiones) <- c("region", "nombre")
+# regiones$nombre <- c("Tarapacá", "Antofagasta", "Atacama", "Coquimbo", "Valparaíso", 
+#                      "Libertador General Bernardo O’Higgins", "Maule", "Concepción", "La Araucania",
+#                      "Los Lagos", "Aysén del General Carlos Ibañez del Campo", "Magallanes y de la Antártica Chilena", 
+#                      "Los Rios", "Arica y Parinacota", "Ñuble")
+# caletas <- left_join(caletas, regiones)
+# rm(regiones)
+
+
+## Nombre de las regiones
+
+
 
 selectYears <- function(data=caletas)
 {
@@ -63,5 +82,5 @@ selectYears <- function(data=caletas)
 #sp <- c("chinook", "coho", "chum", "pink", "sockeye")
 tab <<- 0
 S <<- 'ALMEJA'
-R <<- "8"
+R <<- "Concepción"
 Provincia <<- "Arauco"

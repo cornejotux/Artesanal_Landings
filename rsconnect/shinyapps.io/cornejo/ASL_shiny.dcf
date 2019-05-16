@@ -5,8 +5,9 @@ account: cornejo
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 262210
-bundleId: 1208921
+bundleId: 2047830
 url: https://cornejo.shinyapps.io/ASL_shiny/
-when: 1517865691.18304
+when: 1556570847.64857
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: www/header.png|www/NCEAS.jpg|www/SASAP.jpg
