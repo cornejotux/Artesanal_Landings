@@ -24,10 +24,17 @@ library(DT)
 
 today()
 ff <- str_remove_all(today()-1, "-")
+
+ff <- str_remove_all(today()-2, "-")
 url <- paste("http://www.sernapesca.cl/sites/default/files/16_cuota_anchoveta-sardina_comun_v-x_", ff, ".xlsx", sep = "")
 
 
 download.file(url=url, destfile = "controlCuota.xlsx")
 
 controlCuota <- read_excel("controlCuota.xlsx", sheet="Compilado")
+controlCuota$Recurso <- ifelse(controlCuota$Recurso == "SArdina común", "Sardina común", controlCuota$Recurso)
+controlCuota <- filter(controlCuota, Organización_titular_area != "Organización_titular_area")
+
+# ggplot(data=controlCuota, aes(y = Porcentaje, x = Organización_titular_area)) +
+#   geom_col()
 

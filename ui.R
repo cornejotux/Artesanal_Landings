@@ -14,7 +14,8 @@ fluidPage(
     #conditionalPanel(
     #  condition="input.tabselected==1",
     uiOutput("Recurso"),
-    uiOutput("Zona")
+    uiOutput("Zona"),
+    uiOutput("Organizacion")
     #)
     #,
     # conditionalPanel(
@@ -28,14 +29,12 @@ fluidPage(
   mainPanel(
     # Output: Tabset w/ plot, summary, and table ----
     tabsetPanel(type = "tabs",
-                tabPanel("Control por region Length", value = 1, 
+                tabPanel("Tabla", value = 1, 
                          dataTableOutput('tableZonaEspecie')),
-                tabPanel("By Regions", value = 2, 
-                         #plotOutput('plotAllRegions')
+                tabPanel("Grafico", value = 2, 
+                         plotOutput('graficoZonaEspecie')
                          ),
-                tabPanel("By Species", value = 3, 
-                         #plotOutput('plotAllSpecies')),
-                tabPanel("Info", value = 4, HTML(
+                tabPanel("Info", value = 3, HTML(
                   '<b>Origen de los Datos</b>:<br> 
                           Sernapesca!
                           <br><br>
@@ -49,5 +48,4 @@ This shinyApp is under development, for question about it please contact Jorge C
                 ), id = "tabselected"
     )
   )
-)
 )
