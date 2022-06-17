@@ -34,7 +34,7 @@ shinyServer(function(input, output, session) {
     output$tabla <- renderDataTable({
         req(input$Zona)
          temp <- filter(recurso(), Región == input$Zona) %>% 
-           select(-c(Región, `Cargos Por excesos`)) %>% 
+           select(-c(Región)) %>% #, `Cargos Por excesos`)) %>% 
            mutate(`Cuota Asignada` = round(`Cuota Asignada`, 0),
                   `Cuota efectiva` = round(`Cuota efectiva`, 0),
                   `Captura (T)` = round(`Captura (T)`, 1),
