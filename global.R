@@ -32,9 +32,12 @@ aa3 <- str_split(aa, ".xlsx")[[1]][1]
 xlsUrl <- paste("http://www.sernapesca.cl/sites/default/files/16_cuota_anchoveta-sardina_comun_v-x_2022", 
                 aa3, ".xlsx", sep="")
 
-#download.file(xlsUrl, "cq.xlsx", mode="wb")
+if (!file.exists(paste(aa3, ".xlsx", sep="")))
+{
+  download.file(xlsUrl, paste(aa3, ".xlsx", sep=""), mode="wb")
+}
 
-ccAnchoveta <- read_excel("cq.xlsx", sheet = "Anchoveta", skip = 2)
+ccAnchoveta <- read_excel(paste(aa3, ".xlsx", sep=""), sheet = "Anchoveta", skip = 2)
 
 ccAnchoveta2 <- ccAnchoveta %>% 
     filter(!is.na(...1)) %>%
@@ -59,7 +62,7 @@ for (i in 2:length(ccAnchoveta2$Región))
 }
 
 
-ccSardina <- read_excel("cq.xlsx", sheet = "Sardina comun", skip = 2)
+ccSardina <- read_excel(paste(aa3, ".xlsx", sep=""), sheet = "Sardina comun", skip = 2)
 
 ccSardina2 <- ccSardina %>% 
   filter(!is.na(...1)) %>%
