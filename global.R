@@ -32,6 +32,8 @@ aa3 <- str_split(aa, ".xlsx")[[1]][1]
 xlsUrl <- paste("http://www.sernapesca.cl/sites/default/files/16_cuota_anchoveta-sardina_comun_v-x_2022", 
                 aa3, ".xlsx", sep="")
 
+archivo <- paste('16_cuota_anchoveta-sardina_comun_v-x_2022', aa3, '.xlsx', sep="")
+
 if (!file.exists(paste(aa3, ".xlsx", sep="")))
 {
   download.file(xlsUrl, paste(aa3, ".xlsx", sep=""), mode="wb")

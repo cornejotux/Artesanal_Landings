@@ -43,7 +43,7 @@ fluidPage(
                          dataTableOutput('tabla')),
                 tabPanel("Datos", value = 4, HTML(
                   '<b>Origen de los Datos</b>:<br> 
-                          Sernapesca
+                          Sernapesca.
                           <br><br>
                           <a href=http://www.sernapesca.cl/informacion-utilidad/consumo-de-cuotas/ target=_new>http://www.sernapesca.cl/informacion-utilidad/consumo-de-cuotas</a>
                           

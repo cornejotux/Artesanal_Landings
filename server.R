@@ -86,7 +86,9 @@ shinyServer(function(input, output, session) {
                   position="identity"
                   ) +
           scale_fill_brewer(palette="Set1") +
-        ggtitle(input$Asignatario) +
+        ggtitle(paste('Archivo de datos: \n',
+                      archivo,
+                      '\nAsignatario: ', input$Asignatario)) +
         theme(plot.title = element_text(size=16))
         },  height = 600, width = 600 )
     
@@ -115,7 +117,9 @@ shinyServer(function(input, output, session) {
                 position="identity"
       ) +
         scale_fill_brewer(palette="Set1")+
-        ggtitle(input$Zona) +
+        ggtitle(paste('Archivo de datos: \n',
+                      archivo,
+                      '\nZona: ', input$Zona)) +
         theme(plot.title = element_text(size=16))
     },  height = 600, width = 600 ) 
     
