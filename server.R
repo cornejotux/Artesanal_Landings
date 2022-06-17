@@ -31,13 +31,15 @@ shinyServer(function(input, output, session) {
     req(input$Zona)
     selectInput('Zona', 'Zona', sort(unique(recurso()$Región)), selected = "VIII Región del Biobio")
   })
-  
-  
-   
     output$tabla <- renderDataTable({
         req(input$Zona)
          temp <- filter(recurso(), Región == input$Zona) %>% 
-           select(-c(Región, `Cargos Por excesos`))
+           select(-c(Región, `Cargos Por excesos`)) %>% 
+           mutate(`Cuota Asignada` = round(`Cuota Asignada`, 0),
+                  `Cuota efectiva` = round(`Cuota efectiva`, 0),
+                  `Captura (T)` = round(`Captura (T)`, 1),
+                  `Saldo (T)` = round(`Saldo (T)`, 1)
+           )
          DT::datatable(temp,
                    caption = paste('Table detalle del control cuota por asignatario en', input$Zona),
                    class = 'cell-border stripe', 
@@ -53,23 +55,7 @@ shinyServer(function(input, output, session) {
                                   selection="multiple"
                    ))
      },  height = 600, width = 600 )
-    
-    
-    datatable(temp,
-              caption = 'Table detalle del control cuota por asignatario.',
-              class = 'cell-border stripe', 
-              filter = 'top',
-              extensions = 'Buttons',
-              fillContainer = FALSE, 
-              options = list(pageLength = 10, 
-                             autoWidth = TRUE,
-                             dom = 'Bfrtip',
-                             buttons = c('copy', 
-                                         'print'), 
-                             scrollX = TRUE, 
-                             selection="multiple"
-              ))
-    
+
     
     output$graficoZonaEspecie <- renderPlot({
       req(input$Zona)
