@@ -11,31 +11,39 @@ fluidPage(
   sidebarPanel(
     HTML('
              '),
-    #conditionalPanel(
-    #  condition="input.tabselected==1",
-    uiOutput("Zona"), 
-    uiOutput("Asignatario"),
-    #)
-    #,
     # conditionalPanel(
-    #  condition="input.tabselected==2", uiOutput("Especies2"), uiOutput("sliderYear2")
-    #  ),
+    #   condition="input.tabselected==1",
+    #   radioButtons("recurso", "Recurso:",
+    #                c("Anchoveta" = "anch",
+    #                  "Sardina" = "sard")),
+    #   uiOutput("Zona"), 
+    #   uiOutput("Asignatario")
+    #   ),
     #conditionalPanel(
-    #  condition="input.tabselected==3", uiOutput("Region3"), uiOutput("sliderYear3")
+    #  condition="input.tabselected==2",
+      radioButtons("recurso", "Recurso:",
+                   c("Anchoveta" = "anch",
+                     "Sardina" = "sard")),
+      uiOutput("Zona"), 
+      uiOutput("Asignatario")
+    #)
     )
     
     ,
   mainPanel(
     # Output: Tabset w/ plot, summary, and table ----
     tabsetPanel(type = "tabs",
-                #tabPanel("Tabla", value = 1, 
-                #         dataTableOutput('tableZonaEspecie')),
-                tabPanel("Grafico", value = 2, 
-                         plotOutput('graficoZonaEspecie')
+
+                tabPanel("Cuota Remanente Regional", value = 1, 
+                        plotOutput('pie')),
+                tabPanel("Cuota Remanente Asignatario", value = 2, 
+                        plotOutput('graficoZonaEspecie')
                          ),
-                tabPanel("Info", value = 3, HTML(
+                tabPanel("Tabla detalle Control Cuota", value = 3, 
+                         dataTableOutput('tabla')),
+                tabPanel("Datos", value = 4, HTML(
                   '<b>Origen de los Datos</b>:<br> 
-                          Sernapesca!
+                          Sernapesca
                           <br><br>
                           <a href=http://www.sernapesca.cl/informacion-utilidad/consumo-de-cuotas/ target=_new>http://www.sernapesca.cl/informacion-utilidad/consumo-de-cuotas</a>
                           

@@ -38,7 +38,16 @@ ccAnchoveta <- read_excel("cq.xlsx", sheet = "Anchoveta", skip = 2)
 
 ccAnchoveta2 <- ccAnchoveta %>% 
     filter(!is.na(...1)) %>%
-    mutate(Movimiento = ifelse(is.na(Movimiento), 0, Movimiento),
+    mutate(Asignatario = tolower(Asignatario)) %>% 
+    filter(!grepl("cuota residual",Asignatario)) %>% 
+    mutate(Asignatario = gsub("asociación gremial de", "ag", Asignatario), 
+           Asignatario = gsub("asociación gremial", "ag", Asignatario),
+           Asignatario = gsub("asociacion gremial", "ag", Asignatario),
+           Asignatario = gsub("sindicato  de trabajadores  independientes", "sti", Asignatario),
+           Asignatario = gsub("sindicato de trabajadores independientes", "sti", Asignatario),
+           #Asignatario = gsub("asociacion gremial", "ag", Asignatario),
+           
+            Movimiento = ifelse(is.na(Movimiento), 0, Movimiento),
            `Captura (T)` = ifelse(is.na(`Captura (T)`), 0, `Captura (T)` ),
            `Cargos Por excesos` = ifelse(is.na(`Cargos Por excesos`), 0, `Cargos Por excesos`),
             Cierre = ifelse(Cierre == "-", "", Cierre),
@@ -50,18 +59,21 @@ for (i in 2:length(ccAnchoveta2$Región))
 }
 
 
-
 ccSardina <- read_excel("cq.xlsx", sheet = "Sardina comun", skip = 2)
 
 ccSardina2 <- ccSardina %>% 
   filter(!is.na(...1)) %>%
-  mutate(Movimiento = ifelse(is.na(Movimiento), 0, Movimiento),
+  mutate(Asignatario = gsub("asociación gremial de", "ag", Asignatario), 
+         Asignatario = gsub("asociación gremial", "ag", Asignatario),
+         Asignatario = gsub("asociacion gremial", "ag", Asignatario),
+         Asignatario = gsub("sindicato  de trabajadores  independientes", "sti", Asignatario),
+         Asignatario = gsub("sindicato de trabajadores independientes", "sti", Asignatario),
+         #Asignatario = gsub("asociacion gremial", "ag", Asignatario),
+          Movimiento = ifelse(is.na(Movimiento), 0, Movimiento),
          `Captura (T)` = ifelse(is.na(`Captura (T)`), 0, `Captura (T)` ),
          `Cargos por exceso` = ifelse(is.na(`Cargos por exceso`), 0, `Cargos por exceso`),
          Cierre = ifelse(Cierre == "-", "", Cierre),
          Cierre = as.Date(as.numeric(Cierre), origin =  "1899-12-30"))
-
-
 
 for (i in 2:length(ccSardina2$Región))
 {
