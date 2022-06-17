@@ -13,9 +13,8 @@ fluidPage(
              '),
     #conditionalPanel(
     #  condition="input.tabselected==1",
-    uiOutput("Recurso"),
-    uiOutput("Zona"),
-    uiOutput("Organizacion")
+    uiOutput("Zona"), 
+    uiOutput("Asignatario"),
     #)
     #,
     # conditionalPanel(
@@ -29,8 +28,8 @@ fluidPage(
   mainPanel(
     # Output: Tabset w/ plot, summary, and table ----
     tabsetPanel(type = "tabs",
-                tabPanel("Tabla", value = 1, 
-                         dataTableOutput('tableZonaEspecie')),
+                #tabPanel("Tabla", value = 1, 
+                #         dataTableOutput('tableZonaEspecie')),
                 tabPanel("Grafico", value = 2, 
                          plotOutput('graficoZonaEspecie')
                          ),
