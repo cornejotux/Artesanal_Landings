@@ -1,8 +1,8 @@
 
 #pageWithSidebar(
 fluidPage(
-  title="Control diario de Cuotas - Sardina y Anchoveta",
-  #theme = shinytheme("flatly"),
+  title="Control diario de Cuotas - sardina común y anchoveta",
+  titlePanel("Control diario de Cuotas - sardina común y anchoveta"),
   headerPanel(
     HTML('<td style="width: 100%"></td>
               
