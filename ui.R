@@ -27,7 +27,17 @@ fluidPage(
       uiOutput("Zona3")
       ),
   conditionalPanel(
-    condition="input.tabselected==4")),
+    condition="input.tabselected==4"),
+  
+  HTML('
+            <table style="width:100%">
+                <tr>
+                  <td style="width: 80%"> <center><img src="logo.png" scale height="250"/></center></td>
+                </tr>
+            </table>'),
+  
+  width = 2
+  ),
   
   mainPanel(
     # Output: Tabset w/ plot, summary, and table ----
@@ -55,17 +65,16 @@ This shinyApp is under development, for question about it please contact Jorge C
     )
   ),
   # Footer
-  hr(),
     HTML("<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><hr>
     Aplicación web para la visualizacion rápida de las cuotas y remanente de
-      cuota de los recursos sardina común y anchoveta en la region del Biobío. 
+      cuota de los recursos sardina común y anchoveta en la region del Biobío. <br>
       Aplicación preparada y distribuida como parte del proyecto 
          <a href='https://www.ifop.cl/safa' target=_new>SAFA</a>financiado por 
          <img src='logoIFOP.png' scale height='25'/> 
          <a href='http://www.ifop.cl/' target=_new>IFOP</a> y 
          <img src='logoGore.jpg' scale height='35'/>
-       <a href='http://sitio.gorebiobio.cl/' target=_new>GORE Biobío</a>. <br>
+       <a href='http://sitio.gorebiobio.cl/' target=_new>GORE Biobío</a>. 
     V0.2.0 2022/06"),
   HTML("<!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src='https://www.googletagmanager.com/gtag/js?id=G-VRMRJVHGYZ'></script>
