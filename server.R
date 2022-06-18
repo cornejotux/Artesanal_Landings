@@ -101,6 +101,9 @@ shinyServer(function(input, output, session) {
     temp2 <- data.frame(
       value=c(temp$capturaTotal, temp$remanente),
       Referencia=c("Capturado", "Remanente"))
+    titulo <- paste('Archivo de datos: ', archivo, 
+                    '\nCuota Total: ', floor(sum(temp2$value)), ' (t)', sep="")
+    
     
     ggplot(data=temp2, aes(y = value, x="", fill=Referencia)) + 
       geom_bar(stat="identity", width=1) +
@@ -110,9 +113,7 @@ shinyServer(function(input, output, session) {
                 position="identity"
       ) +
       scale_fill_brewer(palette="Set1")+
-      ggtitle(paste('Archivo de datos: \n',
-                    archivo,
-                    '\nZona: ', input$Zona)) +
+      ggtitle(titulo) +
       theme(plot.title = element_text(size=16))
   },  height = 600, width = 600 ) 
   
@@ -122,10 +123,14 @@ shinyServer(function(input, output, session) {
       req(input$Zona2)
       req(input$Asignatario2)
       temp <- filter(recurso2(), Región == input$Zona2, Asignatario == input$Asignatario2)
+     
       temp2 <- data.frame(
               value = c(temp$`Captura (T)`, temp$`Saldo (T)`),
               Referencia = c("Capturado", "Remanente") 
       )
+      titulo <- paste('Archivo de datos: ', archivo, '\nAsignatario: ', 
+                      input$Asignatario2, '\nCuota Total: ', floor(sum(temp2$value)), ' (t)', sep="")
+      
       ggplot(data=temp2, aes(y = value, x="", fill=Referencia)) + 
               geom_bar(stat="identity", width=1, color="white") +
               coord_polar("y", start=0) +
@@ -134,9 +139,7 @@ shinyServer(function(input, output, session) {
                   position="identity"
                   ) +
           scale_fill_brewer(palette="Set1") +
-        ggtitle(paste('Archivo de datos: \n',
-                      archivo,
-                      '\nAsignatario: ', input$Asignatario)) +
+        ggtitle(titulo) +
         theme(plot.title = element_text(size=16))
         },  height = 600, width = 600 )
  
