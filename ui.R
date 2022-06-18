@@ -9,27 +9,26 @@ fluidPage(
               <td style="width: 0%"></td>')
   ),
   sidebarPanel(
-    HTML('
-             '),
-    # conditionalPanel(
-    #   condition="input.tabselected==1",
-    #   radioButtons("recurso", "Recurso:",
-    #                c("Anchoveta" = "anch",
-    #                  "Sardina" = "sard")),
-    #   uiOutput("Zona"), 
-    #   uiOutput("Asignatario")
-    #   ),
-    #conditionalPanel(
-    #  condition="input.tabselected==2",
-      radioButtons("recurso", "Recurso:",
-                   c("Anchoveta" = "anch",
-                     "Sardina" = "sard")),
-      uiOutput("Zona"), 
-      uiOutput("Asignatario")
-    #)
-    )
-    
-    ,
+    HTML('   '),
+    conditionalPanel(
+      condition="input.tabselected==1",
+        uiOutput("Recurso"),
+        uiOutput("Zona")
+    ),
+    conditionalPanel(
+      condition="input.tabselected==2",
+      uiOutput("Recurso2"),
+      uiOutput("Zona2"),
+      uiOutput("Asignatario2")
+    ),
+    conditionalPanel(
+      condition="input.tabselected==3",
+      uiOutput("Recurso3"),
+      uiOutput("Zona3")
+      ),
+  conditionalPanel(
+    condition="input.tabselected==4")
+    ),
   mainPanel(
     # Output: Tabset w/ plot, summary, and table ----
     tabsetPanel(type = "tabs",
@@ -54,5 +53,25 @@ This shinyApp is under development, for question about it please contact Jorge C
                         ')
                 ), id = "tabselected"
     )
-  )
+  ),
+  # Footer
+  hr(),
+  #HTML("Aplicación para la observación de datos SAFA, disponible en servidor de 
+  #  <a href='http://caleuche.ifop.cl/' target=_new>IFOP Sede Talcahuano</a><br>"),
+  #HTML("Creado en <a href='https://shiny.rstudio.com/' target=_new>Shiny</a> 
+  #      por <a href='http://www.jorgecornejo.net' target=_new>Jorge Cornejo</a> 
+  #      (jorge.cornejo[at]ifop.cl), financiado por <img src='logoIFOP.png' scale height='25'/>
+  #      <a href='http://www.ifop.cl/' target=_new>IFOP</a> y <img src='logoGore.jpg' scale height='35'/>
+  #      <a href='http://sitio.gorebiobio.cl/' target=_new>GORE Biobío</a>. <br>
+  #   V0.2.0 2022/06"),
+  HTML("<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src='https://www.googletagmanager.com/gtag/js?id=G-VRMRJVHGYZ'></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VRMRJVHGYZ');
+</script>")
+  
 )

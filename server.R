@@ -1,65 +1,127 @@
-tab <- 0
-
-
-library(shiny)
+tab <<- 0
+data <- 0
 shinyServer(function(input, output, session) {
   
   recurso <- reactive({
-    if(input$recurso == "sard") data <- ccSardina2
-    if(input$recurso == "anch") data <- ccAnchoveta2
+    if(input$Recurso == "sard") {
+      data <- ccSardina2
+    } else {
+      data <- ccAnchoveta2
+    }
     data <- data %>% 
       select(-'...1', -Periodo) %>% 
       mutate(`% Consumido` = round((`% Consumido`*100), 1))
     return(data)
   })
-    
-  output$Zona <- renderUI({
-    req(input$recurso)
-    selectInput('Zona', 'Zona', sort(unique(recurso()$Región)), selected = "VIII Región del Biobio")
+  
+  recurso2 <- reactive({
+    if(input$Recurso2 == "sard") {
+      data2 <- ccSardina2
+    } else {
+      data2 <- ccAnchoveta2
+    }
+    data2 <- data2 %>% 
+      select(-'...1', -Periodo) %>% 
+      mutate(`% Consumido` = round((`% Consumido`*100), 1))
+    return(data2)
   })
   
-  searchResults2 <- reactive({
-    sort(unique(filter(recurso(), Región == input$Zona))$Asignatario)
+  recurso3 <- reactive({
+    if(input$Recurso3 == "sard") {
+      data <- ccSardina2
+    } else {
+      data <- ccAnchoveta2
+    }
+    data <- data %>% 
+      select(-'...1', -Periodo) %>% 
+      mutate(`% Consumido` = round((`% Consumido`*100), 1))
+    return(data)
   })
   
-  output$Asignatario <- renderUI({
-    req(input$Zona)
-    selectInput('Asignatario', 'Aignatario', searchResults2(), selected = "")
-  })
-
-  output$Grupo <- renderUI({
-    req(input$Zona)
-    selectInput('Zona', 'Zona', sort(unique(recurso()$Región)), selected = "VIII Región del Biobio")
-  })
-    output$tabla <- renderDataTable({
-        req(input$Zona)
-         temp <- filter(recurso(), Región == input$Zona) %>% 
-           select(-c(Región)) %>% #, `Cargos Por excesos`)) %>% 
-           mutate(`Cuota Asignada` = round(`Cuota Asignada`, 0),
-                  `Cuota efectiva` = round(`Cuota efectiva`, 0),
-                  `Captura (T)` = round(`Captura (T)`, 1),
-                  `Saldo (T)` = round(`Saldo (T)`, 1)
-           )
-         DT::datatable(temp,
-                   caption = paste('Table detalle del control cuota por asignatario en', input$Zona),
-                   class = 'cell-border stripe', 
-                   filter = 'top',
-                   extensions = 'Buttons',
-                   fillContainer = FALSE, 
-                   options = list(pageLength = 25, 
-                                  autoWidth = TRUE,
-                                  dom = 'Bfrtip',
-                                  buttons = c('Copia', 
-                                              'Imprimir'), 
-                                  scrollX = TRUE, 
-                                  selection="multiple"
-                   ))
-     },  height = 600, width = 600 )
-
+  #################
+  observeEvent(input$tabselected, {
+    if (input$tabselected == 1)
+    {
+      output$Recurso <- renderUI({
+        radioButtons("Recurso", "Recurso:",
+                    c("Anchoveta" = "anch",
+                      "Sardina" = "sard"))
+      })
+      output$Zona <- renderUI({
+        req(input$Recurso)
+        selectInput('Zona', 'Zona', sort(unique(recurso()$Región)), selected = "VIII Región del Biobio")
+      })
+    }
+      
+    if (input$tabselected == 2)
+      {
+        output$Recurso2 <- renderUI({
+          radioButtons("Recurso2", "Recurso:",
+                       c("Anchoveta" = "anch",
+                         "Sardina" = "sard"))
+        })
+        output$Zona2 <- renderUI({
+          req(input$Recurso2)
+          selectInput('Zona2', 'Zona', sort(unique(recurso2()$Región)), selected = "VIII Región del Biobio")
+        })
+        output$Asignatario2 <- renderUI({
+          req(input$Zona2)
+          asig <- filter(recurso2(), Región == input$Zona2) 
+          selectInput('Asignatario2', 'Asignatario', sort(asig$Asignatario), selected = asig$Asignatario[1])
+        })
+    }
     
-    output$graficoZonaEspecie <- renderPlot({
-      req(input$Zona)
-      temp <- filter(recurso(), Región == input$Zona, Asignatario == input$Asignatario)
+    if (input$tabselected == 3)
+    {
+      output$Recurso3 <- renderUI({
+        radioButtons("Recurso3", "Recurso:",
+                     c("Anchoveta" = "anch",
+                       "Sardina" = "sard"))
+      })
+      output$Zona3 <- renderUI({
+        req(input$Recurso3)
+        selectInput('Zona3', 'Zona', sort(unique(recurso3()$Región)), selected = "VIII Región del Biobio")
+      })
+    }
+    })
+################
+  
+## Grafico de resumen de la cuota en cada region
+  
+  output$pie <- renderPlot({
+    req(input$Recurso)
+    req(input$Zona)
+    temp <- recurso() %>% 
+      filter(Región == input$Zona) %>% 
+      group_by(Región)  %>%
+      summarise(quotaTotal = sum(recurso()[6]),
+                capturaTotal = sum(`Captura (T)`),
+                remanente = sum(`Saldo (T)`))
+    print(temp)
+    temp2 <- data.frame(
+      value=c(temp$capturaTotal, temp$remanente),
+      Referencia=c("Capturado", "Remanente"))
+    
+    ggplot(data=temp2, aes(y = value, x="", fill=Referencia)) + 
+      geom_bar(stat="identity", width=1) +
+      coord_polar("y") +
+      theme_void() +
+      geom_text(aes(x=factor(1), y=value, label=paste(Referencia, floor(value), '(t)'), ymax=value), 
+                position="identity"
+      ) +
+      scale_fill_brewer(palette="Set1")+
+      ggtitle(paste('Archivo de datos: \n',
+                    archivo,
+                    '\nZona: ', input$Zona)) +
+      theme(plot.title = element_text(size=16))
+  },  height = 600, width = 600 ) 
+  
+  
+  output$graficoZonaEspecie <- renderPlot({
+      req(input$Recurso2)
+      req(input$Zona2)
+      req(input$Asignatario2)
+      temp <- filter(recurso2(), Región == input$Zona2, Asignatario == input$Asignatario2)
       temp2 <- data.frame(
               value = c(temp$`Captura (T)`, temp$`Saldo (T)`),
               Referencia = c("Capturado", "Remanente") 
@@ -77,40 +139,38 @@ shinyServer(function(input, output, session) {
                       '\nAsignatario: ', input$Asignatario)) +
         theme(plot.title = element_text(size=16))
         },  height = 600, width = 600 )
-    
-    
-    
-    ## Grafico de resumen de la cuota en cada region
-    
-    output$pie <- renderPlot({
-      req(input$Zona)
-      temp <- recurso() %>% 
-        filter(Región == input$Zona) %>% 
-        group_by(Región)  %>%
-        summarise(quotaTotal = sum(recurso()[6]),
-                   capturaTotal = sum(`Captura (T)`),
-                   remanente = sum(`Saldo (T)`))
-        print(temp)
-        temp2 <- data.frame(
-                            value=c(temp$capturaTotal, temp$remanente),
-                            Referencia=c("Capturado", "Remanente"))
-        
-      ggplot(data=temp2, aes(y = value, x="", fill=Referencia)) + 
-        geom_bar(stat="identity", width=1) +
-        coord_polar("y") +
-        theme_void() +
-      geom_text(aes(x=factor(1), y=value, label=paste(Referencia, floor(value), '(t)'), ymax=value), 
-                position="identity"
-      ) +
-        scale_fill_brewer(palette="Set1")+
-        ggtitle(paste('Archivo de datos: \n',
-                      archivo,
-                      '\nZona: ', input$Zona)) +
-        theme(plot.title = element_text(size=16))
-    },  height = 600, width = 600 ) 
-    
+ 
+  ## Presentacion de la tabla del control cuota.    
+    output$tabla <- renderDataTable({
+      req(input$Recurso3)
+      req(input$Zona3)
+      temp <- filter(recurso3(), Región == input$Zona3) %>% 
+        select(-c(Región)) %>% #, `Cargos Por excesos`)) %>% 
+        mutate(`Cuota Asignada` = round(`Cuota Asignada`, 0),
+               `Cuota efectiva` = round(`Cuota efectiva`, 0),
+               `Captura (T)` = round(`Captura (T)`, 1),
+               `Saldo (T)` = round(`Saldo (T)`, 1)
+        )
+      DT::datatable(temp,
+                    caption = paste('Tabla detalle del control cuota por asignatario en', input$Zona),
+                    class = 'cell-border stripe', 
+                    filter = 'top',
+                    extensions = 'Buttons',
+                    fillContainer = FALSE, 
+                    options = list(
+                                  language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json'),
+                                  pageLength = 25, 
+                                   autoWidth = TRUE,
+                                   dom = 'Bfrtip',
+                                   buttons = 
+                                     list('copy', 'print', list(
+                                       extend = 'collection',
+                                       buttons = c('csv', 'excel', 'pdf'),
+                                       text = 'Download')),
+                                   scrollX = TRUE, 
+                                   selection="multiple"
+                    ))
+    },  height = 600, width = 600 )
     
     
   })
-  
-#})
