@@ -115,7 +115,7 @@ shinyServer(function(input, output, session) {
       scale_fill_brewer(palette="Set1")+
       ggtitle(titulo) +
       theme(plot.title = element_text(size=16))
-  },  height = 600, width = 600 ) 
+  },  height = 500, width = 500 ) 
   
   
   output$graficoZonaEspecie <- renderPlot({

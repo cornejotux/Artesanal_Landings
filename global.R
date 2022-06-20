@@ -15,6 +15,7 @@ library(readxl)
 library(stringr)
 library(DT)
 library(shiny)
+library(bslib)
 
 
 
@@ -94,5 +95,16 @@ for (i in 2:length(ccSardina2$Región))
 temp <- ccAnchoveta2 %>% 
   filter(Región == "VIII Región del Biobio")
 
+
+FECHA <- as.numeric(str_replace(aa3, "_", ""))
+# aa <- floor(FECHA/10000)
+# mm <- floor((FECHA - aa*10000)/100)
+# dd <- FECHA - aa*10000 - mm*100
+# 
+# lubridate::ymd(as.numeric(str_replace(aa3, "_", "")))
+
+TITULO <- paste("Visualizador control cuota de sardina común 
+             y anchoveta. \nFuente: Sernapesca. \nActualizado al: ", 
+                lubridate::ymd(as.numeric(str_replace(aa3, "_", ""))))
 
 
