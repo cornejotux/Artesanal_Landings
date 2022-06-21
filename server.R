@@ -1,5 +1,4 @@
-tab <<- 0
-data <- 0
+margen <- margin(-1,-1,-1,-1, "cm")
 shinyServer(function(input, output, session) {
   
   recurso <- reactive({
@@ -100,48 +99,48 @@ shinyServer(function(input, output, session) {
     print(temp)
     temp2 <- data.frame(
       value=c(temp$capturaTotal, temp$remanente),
-      Referencia=c("Capturado", "Remanente"))
-    titulo <- paste('Archivo de datos: ', archivo, 
-                    '\nCuota Total: ', floor(sum(temp2$value)), ' (t)', sep="")
-    
-    
+      Referencia2=c("Capturado", "Remanente"))
+    Referencia <- paste(temp2$Referencia2, round(temp2$value,0), '(t)')
     ggplot(data=temp2, aes(y = value, x="", fill=Referencia)) + 
       geom_bar(stat="identity", width=1) +
       coord_polar("y") +
       theme_void() +
-      geom_text(aes(x=factor(1), y=value, label=paste(Referencia, floor(value), '(t)'), ymax=value), 
-                position="identity"
-      ) +
-      scale_fill_brewer(palette="Set1")+
-      ggtitle(titulo) +
-      theme(plot.title = element_text(size=16))
-  },  height = 500, width = 500 ) 
-  
+      scale_fill_brewer(palette="Set1") +
+      theme(plot.margin = margen,
+            strip.text.x = element_blank(),
+            strip.background = element_rect(colour="white", fill="white"),
+            legend.title=element_text(size=14, face = "bold"),
+            legend.text=element_text(size=14),
+            legend.position=c(-0.2,0.8)
+            )
+            
+  }) 
   
   output$graficoZonaEspecie <- renderPlot({
       req(input$Recurso2)
       req(input$Zona2)
       req(input$Asignatario2)
+
       temp <- filter(recurso2(), Región == input$Zona2, Asignatario == input$Asignatario2)
      
       temp2 <- data.frame(
               value = c(temp$`Captura (T)`, temp$`Saldo (T)`),
-              Referencia = c("Capturado", "Remanente") 
-      )
-      titulo <- paste('Archivo de datos: ', archivo, '\nAsignatario: ', 
-                      input$Asignatario2, '\nCuota Total: ', floor(sum(temp2$value)), ' (t)', sep="")
-      
+              Referencia2 = c("Capturado", "Remanente") 
+              )
+      Referencia <- paste(temp2$Referencia2, round(temp2$value,1), '(t)')
       ggplot(data=temp2, aes(y = value, x="", fill=Referencia)) + 
               geom_bar(stat="identity", width=1, color="white") +
               coord_polar("y", start=0) +
               theme_void() +
-        geom_text(aes(x=factor(1), y=value, label=paste(Referencia, floor(value), '(t)'), ymax=value), 
-                  position="identity"
-                  ) +
-          scale_fill_brewer(palette="Set1") +
-        ggtitle(titulo) +
-        theme(plot.title = element_text(size=16))
-        },  height = 600, width = 600 )
+        scale_fill_brewer(palette="Set1") +
+        theme(plot.margin = margen,
+              strip.text.x = element_blank(),
+              strip.background = element_rect(colour="white", fill="white"),
+              legend.title=element_text(size=16, face = "bold"),
+              legend.text=element_text(size=14),
+              legend.position=c(-0.2,0.8)
+        )
+        }) #,  height = 600, width = 600 )
  
   ## Presentacion de la tabla del control cuota.    
     output$tabla <- renderDataTable({
@@ -173,7 +172,7 @@ shinyServer(function(input, output, session) {
                                    scrollX = TRUE, 
                                    selection="multiple"
                     ))
-    },  height = 600, width = 600 )
+    })
     
     
   })

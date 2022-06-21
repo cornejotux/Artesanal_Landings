@@ -3,7 +3,7 @@ bootstrapPage(
   div(class="container-fluid",
       div(class="text-center text-lg-start",
           h2(TITULO, class="d-none d-lg-block"),
-          h2("Control Cuota", class="d-block d-lg-none")
+          h3("Control Cuota", class="d-block d-lg-none")
       ),
       div(class="row",
           div(class="col-lg-3",
@@ -42,15 +42,13 @@ bootstrapPage(
                                       tabPanel("Tabla", value = 3, 
                                                dataTableOutput('tabla')),
                                       tabPanel("Datos", value = 4, 
-                                        HTML('<b>Origen de los Datos</b>:<br> 
-                                              Sernapesca.
-                                              <br><br>
-                                              <a href=http://www.sernapesca.cl/informacion-utilidad/consumo-de-cuotas/ target=_new>http://www.sernapesca.cl/informacion-utilidad/consumo-de-cuotas</a>
+                                        HTML('<br>Datos obenitodos desde pagina del <b>Sernapesca</b> actualizados al '),
+                                        HTML(paste(lubridate::ymd(as.numeric(str_replace(aa3, "_", ""))))),
+                                    
+                                        HTML('disponibles en el link del servicio: <a href=http://www.sernapesca.cl/informacion-utilidad/consumo-de-cuotas/ target=_new>http://www.sernapesca.cl/informacion-utilidad/consumo-de-cuotas</a>
                                               <br><br><br>
-                                              Esta aplicacion se encuentra en desarrollo, para consultas 
+                                              Esta aplicación se encuentra en desarrollo, para consultas 
                                               escribir a Jorge Cornejo, jorge.cornejo[at]ifop.cl<br><br>
-                                              This shinyApp is under development, for question about it 
-                                              please contact Jorge Cornejo, jorge.cornejo[at]ifop.cl<br><br>
                                             ')
                                       ), id = "tabselected"
                                       
@@ -69,7 +67,7 @@ bootstrapPage(
         (safa[at]ifop.cl), financiado por <img src='logoIFOP.png' scale height='25'/>
         <a href='http://www.ifop.cl/' target=_new>IFOP</a> y <img src='logoGore.jpg' scale height='35'/>
         <a href='http://sitio.gorebiobio.cl/' target=_new>GORE Biobío</a>. <br>
-     V0.5.0 2022/06"), 
+     V1.0 2022/06"), 
         class="d-none d-lg-block"),
       HTML("<!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src='https://www.googletagmanager.com/gtag/js?id=G-VRMRJVHGYZ'></script>
