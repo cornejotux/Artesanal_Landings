@@ -48,7 +48,7 @@ bootstrapPage(
                                         HTML('disponibles en el link del servicio: <a href=http://www.sernapesca.cl/informacion-utilidad/consumo-de-cuotas/ target=_new>http://www.sernapesca.cl/informacion-utilidad/consumo-de-cuotas</a>
                                               <br><br><br>
                                               Esta aplicación se encuentra en desarrollo, para consultas 
-                                              escribir a Jorge Cornejo, jorge.cornejo[at]ifop.cl<br><br>
+                                              escribir a safa[at]ifop.cl<br><br>
                                             ')
                                       ), id = "tabselected"
                                       
