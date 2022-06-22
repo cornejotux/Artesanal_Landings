@@ -2,8 +2,8 @@ bootstrapPage(
   theme  = bs_theme(version = 5, bootswatch = "minty"), 
   div(class="container-fluid",
       div(class="text-center text-lg-start",
-          h2(TITULO, class="d-none d-lg-block"),
-          h3("Control Cuota", class="d-block d-lg-none")
+          h2(TITULO, class="d-none d-lg-block")#,
+          #h4("Control Cuota", class="d-block d-lg-none")
       ),
       div(class="row",
           div(class="col-lg-3",

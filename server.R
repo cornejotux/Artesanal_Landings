@@ -111,7 +111,7 @@ shinyServer(function(input, output, session) {
             strip.background = element_rect(colour="white", fill="white"),
             legend.title=element_text(size=14, face = "bold"),
             legend.text=element_text(size=14),
-            legend.position=c(-0.2,0.8)
+            legend.position=c(0,0.8)
             )
             
   }) 
@@ -138,7 +138,7 @@ shinyServer(function(input, output, session) {
               strip.background = element_rect(colour="white", fill="white"),
               legend.title=element_text(size=16, face = "bold"),
               legend.text=element_text(size=14),
-              legend.position=c(-0.2,0.8)
+              legend.position=c(0,0.8)
         )
         }) #,  height = 600, width = 600 )
  
