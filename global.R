@@ -104,7 +104,7 @@ FECHA <- as.numeric(str_replace(aa3, "_", ""))
 # lubridate::ymd(as.numeric(str_replace(aa3, "_", "")))
 
 TITULO <- paste("Visualizador control cuota de sardina común 
-             y anchoveta. \nFuente: Sernapesca. \nActualizado al: ", 
+             y anchoveta para la flota artesanal. Fuente: Sernapesca. Actualizado al: ", 
                 lubridate::ymd(as.numeric(str_replace(aa3, "_", ""))))
 
 

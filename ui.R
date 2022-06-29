@@ -46,7 +46,7 @@ bootstrapPage(
                                         HTML(paste(lubridate::ymd(as.numeric(str_replace(aa3, "_", ""))))),
                                     
                                         HTML('disponibles en el link del servicio: <a href=http://www.sernapesca.cl/informacion-utilidad/consumo-de-cuotas/ target=_new>http://www.sernapesca.cl/informacion-utilidad/consumo-de-cuotas</a>
-                                              <br><br><br>
+                                              <br><br>Los gráficos de la cuota regional y por asignatario incluyes los traspasos.<br><br>
                                               Esta aplicación se encuentra en desarrollo, para consultas 
                                               escribir a safa[at]ifop.cl<br><br>
                                             ')

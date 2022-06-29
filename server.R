@@ -102,18 +102,18 @@ shinyServer(function(input, output, session) {
       Referencia2=c("Capturado", "Remanente"))
     Referencia <- paste(temp2$Referencia2, round(temp2$value,0), '(t)')
     ggplot(data=temp2, aes(y = value, x="", fill=Referencia)) + 
-      geom_bar(stat="identity", width=1) +
+      geom_bar(stat="identity", width=1, color="white") +
       coord_polar("y") +
       theme_void() +
       scale_fill_brewer(palette="Set1") +
       theme(plot.margin = margen,
             strip.text.x = element_blank(),
             strip.background = element_rect(colour="white", fill="white"),
-            legend.title=element_text(size=14, face = "bold"),
+            legend.title=element_text(size=16, face = "bold"),
             legend.text=element_text(size=14),
             legend.position=c(0.3,0.8)
-      )
-    
+      ) +
+      geom_text(x=0.3, y=0.3, label="Considera Traspasos", size = 8)
   }) 
   
   output$graficoZonaEspecie <- renderPlot({
@@ -139,7 +139,8 @@ shinyServer(function(input, output, session) {
             legend.title=element_text(size=16, face = "bold"),
             legend.text=element_text(size=14),
             legend.position=c(0.3,0.8)
-      )
+      )+
+      geom_text(x=0.3, y=0.3, label="Considera Traspasos", size = 8)
   }) #,  height = 600, width = 600 )
   
   ## Presentacion de la tabla del control cuota.    
