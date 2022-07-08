@@ -66,7 +66,8 @@ shinyServer(function(input, output, session) {
       output$Asignatario2 <- renderUI({
         req(input$Zona2)
         asig <- filter(recurso2(), Región == input$Zona2) 
-        selectInput('Asignatario2', 'Asignatario', sort(asig$Asignatario), selected = asig$Asignatario[1])
+        selectInput('Asignatario2', 'Asignatario', sort(asig$Asignatario), selected = "sti pescadores de la caleta coliumo, registro sindical único 08.06.0027")
+                      #asig$Asignatario[1])
       })
     }
     
@@ -84,8 +85,7 @@ shinyServer(function(input, output, session) {
     }
   })
   ################
-  
-  ## Grafico de resumen de la cuota en cada region
+    ## Grafico de resumen de la cuota en cada region
   
   output$pie <- renderPlot({
     req(input$Recurso)
@@ -115,7 +115,9 @@ shinyServer(function(input, output, session) {
       ) +
       geom_text(x=0.3, y=0.3, label="Considera Traspasos", size = 8)
   }) 
+
   
+### Este grafico hace el plot por asignatario desde de la zona
   output$graficoZonaEspecie <- renderPlot({
     req(input$Recurso2)
     req(input$Zona2)
@@ -128,19 +130,47 @@ shinyServer(function(input, output, session) {
       Referencia2 = c("Capturado", "Remanente") 
     )
     Referencia <- paste(temp2$Referencia2, round(temp2$value,1), '(t)')
-    ggplot(data=temp2, aes(y = value, x="", fill=Referencia)) + 
-      geom_bar(stat="identity", width=1, color="white") +
-      coord_polar("y", start=0) +
-      theme_void() +
-      scale_fill_brewer(palette="Set1") +
-      theme(plot.margin = margen,
-            strip.text.x = element_blank(),
-            strip.background = element_rect(colour="white", fill="white"),
-            legend.title=element_text(size=16, face = "bold"),
-            legend.text=element_text(size=14),
-            legend.position=c(0.3,0.8)
-      )+
-      geom_text(x=0.3, y=0.3, label="Considera Traspasos", size = 8)
+    
+    if(temp2$value[2]>0)
+    {
+      ggplot(data=temp2, aes(y = value, x="", fill=Referencia)) + 
+        geom_bar(stat="identity", width=1, color="white") +
+        coord_polar("y", start=0) +
+        theme_void() +
+        scale_fill_brewer(palette="Set1") +
+        theme(plot.margin = margen,
+              strip.text.x = element_blank(),
+              strip.background = element_rect(colour="white", fill="white"),
+              legend.title=element_text(size=16, face = "bold"),
+              legend.text=element_text(size=14),
+              legend.position=c(0.3,0.8)
+        )+
+        geom_text(x=0.3, y=0.3, label="Considera Traspasos", size = 8)
+    } else{
+      temp
+      ggplot(data=temp, aes(y = `Saldo (T)`, x=Asignatario)
+      ) + 
+        geom_bar(stat="identity", width=1, color="white") +
+        theme_void() +
+        scale_fill_brewer(palette="Set1") +
+         theme(#plot.margin = margen,
+               #strip.text.x = element_blank(),
+               strip.background = element_rect(colour="white", fill="white"),
+               legend.title=element_text(size=16, face = "bold"),
+               legend.text=element_text(size=14),
+               legend.position="bottom"
+         ) +
+
+      geom_text(x=1, y=temp$`Saldo (T)`/4, label="Considera Traspasos", size = 8) +
+      geom_text(x=1, y=temp$`Saldo (T)`/3, label=paste("Cuota ", round(temp2$value[1],1), "(t)"), size = 8, col="blue") +
+      geom_text(x=1, y=temp$`Saldo (T)`/2, label=paste("Captura a la fecha", round(sum(temp2$value[1], -1*temp2$value[2]),1), "(t)"), 
+                 size = 8, col="red")  +
+        geom_text(x=1, y=temp$`Saldo (T)`/1, label=paste("Captura a la fecha", round(sum(temp2$value[1], -1*temp2$value[2]),1), "(t)"), 
+                  size = 8, col="red")  
+      
+    }
+    
+
   }) #,  height = 600, width = 600 )
   
   ## Presentacion de la tabla del control cuota.    

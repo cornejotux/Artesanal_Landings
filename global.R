@@ -3,7 +3,7 @@
 ## Objetivo: Toma el registro de los desembarque de sardina y anchoveta
 ##           y los pone en una tabla de registro de cuotas
 
-##### Lo primero que hacemos es descargar los datos desde el sernapesca
+##### Lo primero que heckout/hkf0yrQzmfAOINSl4uZxhacemos es descargar los datos desde el sernapesca
 ##### Para luego procesarlos y trabajar en la plataforma del Shiny
 rm(list=ls())
 
@@ -16,7 +16,6 @@ library(stringr)
 library(DT)
 library(shiny)
 library(bslib)
-
 
 
 url <- "http://www.sernapesca.cl/informacion-utilidad/consumo-de-cuotas"
@@ -35,6 +34,9 @@ xlsUrl <- paste("http://www.sernapesca.cl/sites/default/files/16_cuota_anchoveta
                 aa3, ".xlsx", sep="")
 
 archivo <- paste('16_cuota_anchoveta-sardina_comun_v-x_2022', aa3, '.xlsx', sep="")
+
+aa3 <- str_replace(aa3, "v", "")
+aa3 <- str_replace(aa3, "_", "")
 
 if (!file.exists(paste(aa3, ".xlsx", sep="")))
 {
@@ -87,16 +89,20 @@ for (i in 2:length(ccSardina2$Región))
   if(is.na(ccSardina2$Región[i])) ccSardina2$Región[i] <- ccSardina2$Región[i-1]
 }
 
-# ggplot(data=controlCuota, aes(y = Porcentaje, x = Organización_titular_area)) +
-#   geom_col()
-
+#todo <- cbind(ccAnchoveta2, ccSardina2)
 
 
 temp <- ccAnchoveta2 %>% 
   filter(Región == "VIII Región del Biobio")
 
 
-FECHA <- as.numeric(str_replace(aa3, "_", ""))
+FECHA <- as.numeric(aa3)
+  
+# as.numeric(str_replace(aa3, "_v", ""))
+# if (is.na(FECHA))
+# {
+#   FECHA <- as.numeric(str_replace(aa3, "_v", ""))
+# }
 # aa <- floor(FECHA/10000)
 # mm <- floor((FECHA - aa*10000)/100)
 # dd <- FECHA - aa*10000 - mm*100
@@ -105,6 +111,6 @@ FECHA <- as.numeric(str_replace(aa3, "_", ""))
 
 TITULO <- paste("Visualizador control cuota de sardina común 
              y anchoveta para la flota artesanal. Fuente: Sernapesca. Actualizado al: ", 
-                lubridate::ymd(as.numeric(str_replace(aa3, "_", ""))))
+                lubridate::ymd(FECHA))
 
 
