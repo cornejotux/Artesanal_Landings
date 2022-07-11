@@ -1,30 +1,7 @@
 margen <- margin(-1,-1,-1,-1, "cm")
 shinyServer(function(input, output, session) {
   
-  recurso <- reactive({
-    if(input$Recurso == "sard") {
-      data <- ccSardina2
-    } else {
-      data <- ccAnchoveta2
-    }
-    data <- data %>% 
-      select(-'...1', -Periodo) %>% 
-      mutate(`% Consumido` = round((`% Consumido`*100), 1))
-    return(data)
-  })
-  
-  recurso2 <- reactive({
-    if(input$Recurso2 == "sard") {
-      data2 <- ccSardina2
-    } else {
-      data2 <- ccAnchoveta2
-    }
-    data2 <- data2 %>% 
-      select(-'...1', -Periodo) %>% 
-      mutate(`% Consumido` = round((`% Consumido`*100), 1))
-    return(data2)
-  })
-  
+
   recurso3 <- reactive({
     if(input$Recurso3 == "sard") {
       data <- ccSardina2
@@ -41,33 +18,20 @@ shinyServer(function(input, output, session) {
   observeEvent(input$tabselected, {
     if (input$tabselected == 1)
     {
-      output$Recurso <- renderUI({
-        radioButtons("Recurso", "Recurso:",
-                     c("Anchoveta" = "anch",
-                       "Sardina" = "sard"))
-      })
       output$Zona <- renderUI({
-        req(input$Recurso)
-        selectInput('Zona', 'Zona', sort(unique(recurso()$Región)), selected = "VIII Región del Biobio")
+        selectInput('Zona', 'Zona', sort(unique(todo$Región)), selected = "VIII Región del Biobio")
       })
     }
     
     if (input$tabselected == 2)
     {
-      output$Recurso2 <- renderUI({
-        radioButtons("Recurso2", "Recurso:",
-                     c("Anchoveta" = "anch",
-                       "Sardina" = "sard"))
-      })
       output$Zona2 <- renderUI({
-        req(input$Recurso2)
-        selectInput('Zona2', 'Zona', sort(unique(recurso2()$Región)), selected = "VIII Región del Biobio")
+        selectInput('Zona2', 'Zona', sort(unique(todo$Región)), selected = "VIII Región del Biobio")
       })
       output$Asignatario2 <- renderUI({
         req(input$Zona2)
-        asig <- filter(recurso2(), Región == input$Zona2) 
-        selectInput('Asignatario2', 'Asignatario', sort(asig$Asignatario), selected = "sti pescadores de la caleta coliumo, registro sindical único 08.06.0027")
-                      #asig$Asignatario[1])
+        asig <- filter(todo, Región == input$Zona2) 
+        selectInput('Asignatario2', 'Asignatario', sort(asig$Asignatario))
       })
     }
     
@@ -84,16 +48,14 @@ shinyServer(function(input, output, session) {
       })
     }
   })
-  ################
-    ## Grafico de resumen de la cuota en cada region
+
   
-  output$pie <- renderPlot({
-    req(input$Recurso)
+  output$pieConjunto <- renderPlot({
     req(input$Zona)
-    temp <- recurso() %>% 
+    temp <- todo %>% 
       filter(Región == input$Zona) %>% 
       group_by(Región)  %>%
-      summarise(quotaTotal = sum(recurso()[6]),
+      summarise(quotaTotal = sum(`Cuota efectiva`),
                 capturaTotal = sum(`Captura (T)`),
                 remanente = sum(`Saldo (T)`))
     print(temp)
@@ -101,7 +63,7 @@ shinyServer(function(input, output, session) {
       value=c(temp$capturaTotal, temp$remanente),
       Referencia2=c("Capturado", "Remanente"))
     Referencia <- paste(temp2$Referencia2, round(temp2$value,0), '(t)')
-    ggplot(data=temp2, aes(y = value, x="", fill=Referencia)) + 
+   ggplot(data=temp2, aes(y = value, x="", fill=Referencia)) + 
       geom_bar(stat="identity", width=1, color="white") +
       coord_polar("y") +
       theme_void() +
@@ -114,16 +76,15 @@ shinyServer(function(input, output, session) {
             legend.position=c(0.3,0.8)
       ) +
       geom_text(x=0.3, y=0.3, label="Considera Traspasos", size = 8)
+     
   }) 
 
   
 ### Este grafico hace el plot por asignatario desde de la zona
   output$graficoZonaEspecie <- renderPlot({
-    req(input$Recurso2)
     req(input$Zona2)
     req(input$Asignatario2)
-    
-    temp <- filter(recurso2(), Región == input$Zona2, Asignatario == input$Asignatario2)
+    temp <- filter(todo, Región == input$Zona2, Asignatario == input$Asignatario2)
     
     temp2 <- data.frame(
       value = c(temp$`Captura (T)`, temp$`Saldo (T)`),
@@ -184,6 +145,7 @@ shinyServer(function(input, output, session) {
              `Captura (T)` = round(`Captura (T)`, 1),
              `Saldo (T)` = round(`Saldo (T)`, 1)
       )
+    print(temp)
     DT::datatable(temp,
                   caption = paste('Tabla detalle del control cuota por asignatario en', input$Zona),
                   class = 'cell-border stripe', 

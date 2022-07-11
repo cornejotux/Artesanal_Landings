@@ -89,7 +89,12 @@ for (i in 2:length(ccSardina2$Región))
   if(is.na(ccSardina2$Región[i])) ccSardina2$Región[i] <- ccSardina2$Región[i-1]
 }
 
-#todo <- cbind(ccAnchoveta2, ccSardina2)
+names(ccAnchoveta2) <- names(ccSardina2)
+a<-ccAnchoveta2
+a$sp <- "a"
+s <- ccSardina2
+s$sp <- "s"
+todo <- rbind(a, s)
 
 
 temp <- ccAnchoveta2 %>% 

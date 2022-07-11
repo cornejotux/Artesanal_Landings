@@ -11,12 +11,14 @@ bootstrapPage(
                   #sidebarPanel(
                     conditionalPanel(
                       condition="input.tabselected==1",
-                      uiOutput("Recurso"),
                       uiOutput("Zona")
+                      #uiOutput("Recurso"),
+                      #checkboxInput("spp", label = "Separar especies", value = F),
+                      
                     ),
                     conditionalPanel(
                       condition="input.tabselected==2",
-                      uiOutput("Recurso2"),
+                      #uiOutput("Recurso2"),
                       uiOutput("Zona2"),
                       uiOutput("Asignatario2")
                     ),
@@ -36,7 +38,9 @@ bootstrapPage(
                           tabsetPanel(type = "tabs",
                                       
                                       tabPanel("Regional", value = 1,
-                                               plotOutput('pie')),
+                                               plotOutput('pieConjunto')
+                                              # plotOutput('pie')
+                                              ),
                                       tabPanel("Asignatario", value = 2, 
                                                plotOutput('graficoZonaEspecie')),
                                       tabPanel("Tabla", value = 3, 
