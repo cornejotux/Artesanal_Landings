@@ -64,29 +64,15 @@ bootstrapPage(
       # Footer
       div(
         hr(),
-        HTML("Aplicación para la observación de datos SAFA, disponible en servidor de
-    <a href='http://caleuche.ifop.cl/' target=_new>IFOP Sede Talcahuano</a><br>"),
+        HTML("Aplicación para la observación de datos SAFA."),
         HTML("Creado en <a href='https://shiny.rstudio.com/' target=_new>Shiny</a>
-        por <a href='http://www.ifop.cl/safa' target=_new>SAFA</a>
-        (safa[at]ifop.cl), financiado por <img src='logoIFOP.png' scale height='25'/>
+        por <a href='http://www.jorgecornejo.net/' target=_new>Jorge Cornejo</a>
+        (cornejotux[at]gmail.com), financiado por <img src='logoIFOP.png' scale height='25'/>
         <a href='http://www.ifop.cl/' target=_new>IFOP</a> y <img src='logoGore.jpg' scale height='35'/>
         <a href='http://sitio.gorebiobio.cl/' target=_new>GORE Biobío</a>. <br>
      V1.0 2022/06"), 
         class="d-none d-lg-block"),
-      div(HTML('<center><a href="https://www.instagram.com/safa_ifop/" target="_blank" rel="noopener">
-            <img class="alignleft" src="https://cdn-icons-png.flaticon.com/512/1409/1409946.png" alt="Instagram" width="40" height="40" /></a>
-          <a href="https://twitter.com/SAFA_IFOP" target="_blank" rel="noopener">
-            <img class="" src="https://webtus.net/wp-content/uploads/2016/01/Twitter-icon.png.png" width="40" height="40" /></a>
-          <a href="https://www.facebook.com/profile.php?id=100081285572255" target="_blank" rel="noopener">
-            <img class="size-medium alignright" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu4iTr9XPJnxL83wRi5SD1obvTeSv9ArMLHg&amp;usqp=CAU" width="40" height="40" /></a></center>'),
-          class="d-none d-lg-block"),
-      div(HTML('<center><a href="https://www.instagram.com/safa_ifop/" target="_blank" rel="noopener">
-            <img class="alignleft" src="https://cdn-icons-png.flaticon.com/512/1409/1409946.png" alt="Instagram" width="20" height="20" /></a>
-          <a href="https://twitter.com/SAFA_IFOP" target="_blank" rel="noopener">
-            <img class="" src="https://webtus.net/wp-content/uploads/2016/01/Twitter-icon.png.png" width="20" height="20" /></a>
-          <a href="https://www.facebook.com/profile.php?id=100081285572255" target="_blank" rel="noopener">
-            <img class="size-medium alignright" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu4iTr9XPJnxL83wRi5SD1obvTeSv9ArMLHg&amp;usqp=CAU" width="20" height="20" /></a></center>'),        
-          class="d-block d-lg-none"),
+     
       
       HTML("<!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src='https://www.googletagmanager.com/gtag/js?id=G-VRMRJVHGYZ'></script>
