@@ -5,10 +5,10 @@ account: cornejo
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 7715370
-bundleId: 6547129
+bundleId: 6912454
 url: https://cornejo.shinyapps.io/ControlCuota/
-when: 1669213367.29042
-lastSyncTime: 1669213367.29043
+when: 1677862514.98657
+lastSyncTime: 1677862514.98658
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: 20220616.xlsx|20220707.xlsx
+ignoredFiles: 20220616.xlsx|20220707.xlsx|20221117.xlsx
